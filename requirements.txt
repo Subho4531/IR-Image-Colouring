@@ -1,0 +1,36 @@
+# --- Core DL ---
+torch>=2.2
+torchvision>=0.17
+pytorch-lightning>=2.2
+torchmetrics>=1.3
+kornia>=0.7
+
+# --- Geospatial (install GDAL via conda/OS pkg first on Windows) ---
+rasterio>=1.3
+fiona>=1.9
+pyproj>=3.6
+shapely>=2.0
+
+# --- Vision / augmentation ---
+opencv-python-headless>=4.9
+albumentations>=1.4
+Pillow>=10.0
+numpy>=1.26
+scikit-image>=0.22
+
+# --- Models / metrics ---
+segformer-pytorch>=0.0.6
+clean-fid>=0.1.35
+lpips>=0.1.4
+
+# --- Tracking / config / CLI ---
+wandb>=0.16
+hydra-core>=1.3
+omegaconf>=2.3
+tqdm>=4.66
+
+# --- Dev ---
+pytest>=8.0
+ruff>=0.4
+black>=24.0
+mypy>=1.9

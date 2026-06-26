@@ -1,0 +1,47 @@
+# Single source of truth for data/model/training config (Hydra/OmegaConf).
+# Override on the CLI:  python -m ircolor.training.train stage=color train.lr=1e-4
+
+stage: sr            # sr | color | joint
+
+data:
+  raw_dir: data/raw
+  tiles_dir: data/tiles
+  tile_size: 512
+  overlap: 64
+  rgb_bands: [4, 3, 2]       # Landsat 8/9 OLI: R=B4, G=B3, B=B2
+  ir_bands: [5, 10]          # NIR=B5, TIRS=B10
+  bit_depth: 16
+  normalize: per_tile_zscore # per_tile_zscore | per_tile_minmax
+  val_split: 0.15
+
+model:
+  sr:
+    arch: real_esrgan
+    scale: 4
+    gradient_loss_weight: 0.1
+  color:
+    arch: pix2pixhd          # pix2pixhd | cut | cyclegan | ldm
+    paired: true
+  semantic:
+    enabled: true
+    backbone: segformer_b2
+    weights_frozen: true
+    semantic_loss_weight: 0.5
+
+train:
+  epochs: 100
+  batch_size: 8
+  lr: 2.0e-4
+  precision: 16-mixed
+  accumulate_grad_batches: 1
+  num_workers: 4
+  ckpt_dir: outputs
+
+logging:
+  wandb_project: ir-colorize
+  log_images_every_n_steps: 200
+
+eval:
+  psnr_target: 28.0
+  ssim_target: 0.85
+  latency_target_ms: 500
